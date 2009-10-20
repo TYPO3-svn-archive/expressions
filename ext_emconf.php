@@ -37,6 +37,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'conflicts' => array(
 		),
 		'suggests' => array(
+			'context' => '5.0.0-0.0.0',
 		),
 	),
 	'_md5_values_when_last_written' => 'a:8:{s:9:"ChangeLog";s:4:"a1ba";s:10:"README.txt";s:4:"ee2d";s:31:"class.tx_expressions_parser.php";s:4:"ad07";s:16:"ext_autoload.php";s:4:"38a1";s:12:"ext_icon.gif";s:4:"160e";s:14:"doc/manual.sxw";s:4:"378e";s:52:"interfaces/interface.tx_expressions_keyprocessor.php";s:4:"0d0a";s:58:"interfaces/interface.tx_expressions_valuepostprocessor.php";s:4:"5342";}',
