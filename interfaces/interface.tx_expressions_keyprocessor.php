@@ -20,8 +20,6 @@
 *  GNU General Public License for more details.
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
-*
-* $Id: interface.tx_expressions_keyprocessor.php 235 2009-09-15 20:00:34Z fsuter $
 ***************************************************************/
 
 

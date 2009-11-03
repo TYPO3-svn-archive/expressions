@@ -20,8 +20,6 @@
 *  GNU General Public License for more details.
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
-*
-* $Id: interface.tx_expressions_valuepostprocessor.php 241 2009-09-29 15:38:23Z fsuter $
 ***************************************************************/
 
 
