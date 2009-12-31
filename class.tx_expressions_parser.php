@@ -20,15 +20,7 @@
 *  GNU General Public License for more details.
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
-*
-* $Id: class.tx_expressions_parser.php 241 2009-09-29 15:38:23Z fsuter $
 ***************************************************************/
-/**
- * [CLASS/FUNCTION INDEX of SCRIPT]
- *
- * Hint: use extdeveval to insert/update function index above.
- */
-
 
 /**
  * Utility class to parse strings and evaluate them as expressions or for any subexpressions they may contain
@@ -57,20 +49,18 @@ class tx_expressions_parser {
 		$matches = array();
 		$numReplacements = preg_match_all('/(\{.*?\})/', $string, $matches, PREG_SET_ORDER);
 			// If there was nothing to match or the matching failed, return the string as is
-		if (empty($numReplacements)) {
-			$result = $string;
-		}
-		else {
+		$result = $string;
+		if (!empty($numReplacements)) {
 			$searches = array();
 			$replacements = array();
 			foreach ($matches as $aMatch) {
 				$searches[] = $aMatch[1];
 				$expression = substr($aMatch[1], 1, strlen($aMatch[1]) - 2);
+				$evaluatedExpression = $expression;
 				try {
 					$evaluatedExpression = self::evaluateExpression($expression);
 				}
 				catch (Exception $e) {
-					$evaluatedExpression = $expression;
 					if (TYPO3_DLOG) {
 						t3lib_div::devLog('Bad subexpression: ' . $expression . ' (' . $e->getMessage() . ')', 'expressions', 2);
 					}
@@ -80,20 +70,17 @@ class tx_expressions_parser {
 			$result = str_replace($searches, $replacements, $string);
 		}
 			// Evaluate the string, if necessary
+		$finalString = $result;
 		if ($doEvaluation) {
 			try {
 				$finalString = self::evaluateExpression($result);
 			}
 				// If the evaluation fails, return the original string
 			catch (Exception $e) {
-				$finalString = $result;
 				if (TYPO3_DLOG) {
 					t3lib_div::devLog('Could not evaluate string: ' . $result . ' (' . $e->getMessage() . ')', 'expressions', 2);
 				}
 			}
-		}
-		else {
-			$finalString = $result;
 		}
 		return $finalString;
 	}
