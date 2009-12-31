@@ -98,8 +98,7 @@ class tx_expressions_parser {
 		$hasValue = false;
 		if (empty($expression)) {
 			throw new Exception('Empty expression received');
-		}
-		else {
+		} else {
 				// An expression may contain several expressions as alternate values, separated by a double slash (//)
 			$allExpressions = t3lib_div::trimExplode('//', $expression);
 			foreach ($allExpressions as $anExpression) {
@@ -107,8 +106,7 @@ class tx_expressions_parser {
 				if (strpos($anExpression, ':') === false) {
 					$returnValue = $anExpression;
 					$hasValue = true;
-				}
-				else {
+				} else {
 					$indices = '';
 					list($key, $indices) = t3lib_div::trimExplode(':', $anExpression);
 					if (empty($indices)) {
@@ -126,8 +124,7 @@ class tx_expressions_parser {
 								catch (Exception $e) {
 									continue;
 								}
-							}
-							else {
+							} else {
 								throw new Exception('TSFE not available in this mode (' . TYPO3_MODE . ')');
 							}
 							break;
@@ -142,8 +139,7 @@ class tx_expressions_parser {
 								catch (Exception $e) {
 									continue;
 								}
-							}
-							else {
+							} else {
 								throw new Exception('TSFE->page not available in this mode (' . TYPO3_MODE . ')');
 							}
 							break;
@@ -158,8 +154,7 @@ class tx_expressions_parser {
 								catch (Exception $e) {
 									continue;
 								}
-							}
-							else {
+							} else {
 								throw new Exception('TSFE->config not available in this mode (' . TYPO3_MODE . ')');
 							}
 							break;
