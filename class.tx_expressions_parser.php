@@ -29,7 +29,7 @@
  * @package		TYPO3
  * @subpackage	tx_expressions
  *
- * $Id: class.tx_expressions_parser.php 241 2009-09-29 15:38:23Z fsuter $
+ * $Id$
  */
 class tx_expressions_parser {
 	public static $extKey = 'expressions';
@@ -100,15 +100,25 @@ class tx_expressions_parser {
 			throw new Exception('Empty expression received');
 		} else {
 				// An expression may contain several expressions as alternate values, separated by a double slash (//)
-			$allExpressions = t3lib_div::trimExplode('//', $expression);
+			$allExpressions = t3lib_div::trimExplode('//', $expression, TRUE);
 			foreach ($allExpressions as $anExpression) {
+					// Check if there's a function call
+				$functions = array();
+				if (strpos($anExpression, '->') !== false) {
+						// Split on the function call marker (->)
+					$expressionParts = t3lib_div::trimExplode('->', $anExpression, TRUE);
+						// The first part is the expression itself
+					$anExpression = array_shift($expressionParts);
+						// All other parts are function definitions
+					$functions = $expressionParts;
+				}
 					// If there's no colon (:) in the expression, take it to be a litteral value and return it as is
 				if (strpos($anExpression, ':') === false) {
 					$returnValue = $anExpression;
 					$hasValue = true;
 				} else {
 					$indices = '';
-					list($key, $indices) = t3lib_div::trimExplode(':', $anExpression);
+					list($key, $indices) = t3lib_div::trimExplode(':', $anExpression, TRUE);
 					if (empty($indices)) {
 						throw new Exception('No indices in expression: ' . $expression);
 					}
@@ -205,7 +215,7 @@ class tx_expressions_parser {
 							// Get data from the session
 							// The session key is the first segment after the "session" keyword
 						case 'session':
-							$segments = t3lib_div::trimExplode('|', $indices);
+							$segments = t3lib_div::trimExplode('|', $indices, TRUE);
 							$cacheKey = array_shift($segments);
 							$indices = implode('|', $segments);
 							$cache = $GLOBALS['TSFE']->fe_user->getKey('ses', $cacheKey);
@@ -231,6 +241,22 @@ class tx_expressions_parser {
 							}
 							break;
 					}
+				}
+					// If a value was found, process it and exit the loop
+				if ($hasValue) {
+						// Call functions, if any
+					if (count($functions > 0)) {
+						foreach ($functions as $functionDefinition) {
+							try {
+								$returnValue = self::processFunctionCall($returnValue, $functionDefinition);
+							}
+								// Do nothing on exceptions, value is unchanged
+							catch (Exception $e) {
+									continue;
+							}
+						}
+					}
+					break;
 				}
 			}
 		}
@@ -263,23 +289,100 @@ class tx_expressions_parser {
 	protected static function getValue($source, $indices) {
 		if (empty($indices)) {
 			throw new Exception('No key given for source');
-		}
-		else {
-			$indexList = t3lib_div::trimExplode('|', $indices);
+		} else {
+			$indexList = t3lib_div::trimExplode('|', $indices, TRUE);
 			$value = $source;
 			foreach ($indexList as $key) {
 				if (is_object($value) && isset($value->$key)) {
 					$value = $value->$key;
-				}
-				elseif (is_array($value) && isset($value[$key])) {
+				} elseif (is_array($value) && isset($value[$key])) {
 					$value = $value[$key];
-				}
-				else {
+				} else {
 					throw new Exception('Key ' . $indices . ' not found in source');
 				}
 			}
 		}
 		return $value;
+	}
+
+	/**
+	 * This method handles the function calls that can be made inside expressions
+	 * NOTE: if the function cannot be called, the original value is returned untouched
+	 * 
+	 * @param	mixed	$value: The value to pass to the function (the result of an expression)
+	 * @param	string	$functionDefinition: the definition of the function to call in the appropriate syntax
+	 * @return	mixed	The value, as processed by the function
+	 */
+	protected function processFunctionCall($value, $functionDefinition) {
+			// Initializations
+		$processedValue = $value;
+		$function = '';
+		$argumentsString = '';
+		$arguments = array();
+			// Separate function key and list of arguments
+		list($function, $argumentsString) = t3lib_div::trimExplode(':', $functionDefinition, TRUE);
+			// Get arguments as array
+		if (!empty ($argumentsString)) {
+			$arguments = t3lib_div::trimExplode(',', $argumentsString, TRUE);
+		}
+			// Execute function
+		switch ($function) {
+			case 'fullQuoteStr':
+				if (count($arguments) < 1) {
+					throw new Exception('fullQuoteStr() requires 1 argument (table name)');
+				} elseif (!isset($GLOBALS['TYPO3_DB'])) {
+					throw new Exception('TYPO3_DB object not available');
+				} else {
+					$processedValue = $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $arguments[0]);
+				}
+				break;
+			case 'strip_tags':
+				$functionArguments = array($value);
+				if (isset($arguments[0])) {
+					$functionArguments[] = $arguments[0];
+				}
+				$processedValue = call_user_func_array('strip_tags', $functionArguments);
+				break;
+			case 'removeXSS':
+				$processedValue = t3lib_div::removeXSS($value);
+				break;
+			case 'intval':
+				$functionArguments = array($value);
+				if (isset($arguments[0])) {
+					$functionArguments[] = $arguments[0];
+				}
+				$processedValue = call_user_func_array('intval', $functionArguments);
+				break;
+			case 'floatval':
+				$processedValue = floatval($value);
+				break;
+			case 'boolean':
+				$processedValue = !empty($value);
+				break;
+			case 'hsc':
+				$functionArguments = array($value);
+				if (count($arguments) > 0) {
+					foreach ($arguments as $item) {
+						$functionArguments[] = $item;
+					}
+				}
+				$processedValue = call_user_func_array('htmlspecialchars', $functionArguments);
+				break;
+
+				// If no standard key matches, try to call user-defined function
+			default:
+				if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][self::$extKey]['customFunction'][$function])) {
+					$functionArguments = array($value);
+					if (count($arguments) > 0) {
+						foreach ($arguments as $item) {
+							$functionArguments[] = $item;
+						}
+					}
+					$processedValue = t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][self::$extKey]['customFunction'][$function], $functionArguments, NULL);
+				}
+				break;
+		}
+		return $processedValue;
 	}
 
 	/**
