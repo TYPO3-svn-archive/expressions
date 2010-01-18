@@ -378,7 +378,11 @@ class tx_expressions_parser {
 							$functionArguments[] = $item;
 						}
 					}
-					$processedValue = t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][self::$extKey]['customFunction'][$function], $functionArguments, NULL);
+						// Call user function
+						// Note the last parameter: since this class is purely static,
+						// a reference to it cannot be passed to the user function,
+						// so we instantiate a dummy object instead
+					$processedValue = t3lib_div::callUserFunction($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][self::$extKey]['customFunction'][$function], $functionArguments, new stdClass);
 				}
 				break;
 		}
