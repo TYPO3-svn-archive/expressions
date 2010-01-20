@@ -99,8 +99,10 @@ class tx_expressions_parser {
 		if (empty($expression)) {
 			throw new Exception('Empty expression received');
 		} else {
+				// First of all, evaluate any subexpressions that may be contained in the expression
+			$parsedExpression = self::evaluateString($expression, FALSE);
 				// An expression may contain several expressions as alternate values, separated by a double slash (//)
-			$allExpressions = t3lib_div::trimExplode('//', $expression, TRUE);
+			$allExpressions = t3lib_div::trimExplode('//', $parsedExpression, TRUE);
 			foreach ($allExpressions as $anExpression) {
 					// Check if there's a function call
 				$functions = array();

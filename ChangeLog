@@ -1,6 +1,7 @@
 2010-01-20 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
 	* Added function calls on expressions
+	* Fixed broken support for subexpressions
 
 2009-10-04 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
