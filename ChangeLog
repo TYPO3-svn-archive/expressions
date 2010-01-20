@@ -1,3 +1,7 @@
+2010-01-20 Fabien Udriot <fabien.udriot@ecodev.ch>
+
+	* Added shortcut "plugin"
+
 2010-01-20 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
 	* Added function calls on expressions
