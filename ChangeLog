@@ -1,11 +1,12 @@
-2010-01-20 Fabien Udriot <fabien.udriot@ecodev.ch>
-
-	* Added shortcut "plugin"
-
 2010-01-20 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
 	* Added function calls on expressions
 	* Fixed broken support for subexpressions
+	* Released to TER as version 1.1.0
+
+2010-01-20 Fabien Udriot  <fabien.udriot@ecodev.ch>
+
+	* Added shortcut key "plugin"
 
 2009-10-04 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
