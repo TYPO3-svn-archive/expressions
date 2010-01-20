@@ -171,6 +171,20 @@ class tx_expressions_parser {
 							}
 							break;
 							// Search for a value in the merged GET and POST arrays
+						case 'plugin':
+							if (TYPO3_MODE == 'FE') {
+								try {
+									$returnValue = self::getValue($GLOBALS['TSFE']->tmpl->setup['plugin.'], $indices);
+									$hasValue = true;
+								}
+								catch (Exception $e) {
+									continue;
+								}
+							} else {
+								throw new Exception('TSFE->config not available in this mode (' . TYPO3_MODE . ')');
+							}
+							break;
+							// Search for a value in the merged GET and POST arrays
 						case 'gp':
 							try {
 								$returnValue = self::getValue(array_merge(t3lib_div::_GET(), t3lib_div::_POST()), $indices);
