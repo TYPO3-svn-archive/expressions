@@ -1,3 +1,7 @@
+2010-02-02 Francois Suter (Cobweb)  <typo3@cobweb.ch>
+
+	* Added new function "strftime"
+
 2010-01-20 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
 	* Added function calls on expressions

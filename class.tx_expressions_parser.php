@@ -384,6 +384,13 @@ class tx_expressions_parser {
 				}
 				$processedValue = call_user_func_array('htmlspecialchars', $functionArguments);
 				break;
+			case 'strftime':
+				if (count($arguments) < 1) {
+					throw new Exception('strftime() requires 1 argument (date format)');
+				} else {
+					$processedValue = strftime($arguments[0], $value);
+				}
+				break;
 
 				// If no standard key matches, try to call user-defined function
 			default:
