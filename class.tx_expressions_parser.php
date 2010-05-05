@@ -299,7 +299,7 @@ class tx_expressions_parser {
 	 * NOTE: this code is largely inspired by tslib_content::getGlobal()
 	 *
 	 * @param	mixed	$source: array or object to look into
-	 * @param	string	$indices: "path" of indinces inside the multi-dimensional array, of the form index1|index2|...
+	 * @param	string	$indices: "path" of indices inside the multi-dimensional array, of the form index1|index2|...
 	 * @return	mixed	Whatever value was found in the array, but it should be a simple type
 	 */
 	protected static function getValue($source, $indices) {
@@ -309,9 +309,9 @@ class tx_expressions_parser {
 			$indexList = t3lib_div::trimExplode('|', $indices, TRUE);
 			$value = $source;
 			foreach ($indexList as $key) {
-				if (is_object($value) && isset($value->$key)) {
+				if (is_object($value) && isset($value->$key) && $value->$key !== '') {
 					$value = $value->$key;
-				} elseif (is_array($value) && isset($value[$key])) {
+				} elseif (is_array($value) && isset($value[$key]) && $value[$key] !== '') {
 					$value = $value[$key];
 				} else {
 					throw new Exception('Key ' . $indices . ' not found in source');
