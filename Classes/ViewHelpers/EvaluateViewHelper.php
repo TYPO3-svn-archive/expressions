@@ -36,7 +36,7 @@
  * date:      get values related to the current time, using formats from the PHP date() function.
  * strtotime: get a timestamp by interpreting a human-readable date.
  * session:   get values from some structure stored in the temporary session
- * feuser:      get values from FE User
+ * fe_user:   get values from FE User
  *
  * More documentation can be found at
  * http://typo3.org/extensions/repository/view/expressions/current/
