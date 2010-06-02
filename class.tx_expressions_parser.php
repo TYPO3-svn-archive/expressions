@@ -246,6 +246,21 @@ class tx_expressions_parser {
 								continue;
 							}
 							break;
+							// Search for a value in FE User
+						case 'fe_user':
+							if (TYPO3_MODE == 'FE') {
+								try {
+									$returnValue = self::getValue($GLOBALS['TSFE']->fe_user->user, $indices);
+									$hasValue = true;
+								}
+								catch (Exception $e) {
+									continue;
+								}
+							}
+							else {
+								throw new Exception('TSFE->fe_user not available in this mode (' . TYPO3_MODE . ')');
+							}
+							break;
 							// If none of the standard keys matched, try looking for a hook for that given key
 						default:
 							if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][self::$extKey]['keyProcessor'][$key])) {
