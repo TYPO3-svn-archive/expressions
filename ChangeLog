@@ -1,7 +1,7 @@
-2010-06-02 Fabien Udriot <fabien.udriot@ecodev.ch>
+2010-06-02 Fabien Udriot  <fabien.udriot@ecodev.ch>
 
-	* added View Helper for Fluid
-	* added key "fe_user"
+	* Added View Helper for Fluid
+	* Added shortcut key "fe_user"
 	
 2010-05-05 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 

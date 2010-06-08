@@ -181,7 +181,7 @@ class tx_expressions_parser {
 									continue;
 								}
 							} else {
-								throw new Exception('TSFE->config not available in this mode (' . TYPO3_MODE . ')');
+								throw new Exception('Plugin setup not available in this mode (' . TYPO3_MODE . ')');
 							}
 							break;
 							// Search for a value in the merged GET and POST arrays
@@ -256,8 +256,7 @@ class tx_expressions_parser {
 								catch (Exception $e) {
 									continue;
 								}
-							}
-							else {
+							} else {
 								throw new Exception('TSFE->fe_user not available in this mode (' . TYPO3_MODE . ')');
 							}
 							break;
