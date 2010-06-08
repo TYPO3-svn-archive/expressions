@@ -42,10 +42,10 @@ class tx_expressions_parser {
 	 * The resulting string is then evaluated or not, depending on the second argument
 	 *
 	 * @param	string		$string: the string to parse
-	 * @param	boolean		$doEvaluation: true if string should be evaluated before being returned (default)
+	 * @param	boolean		$doEvaluation: TRUE if string should be evaluated before being returned (default)
 	 * @return	string		The parsed string
 	 */
-	public static function evaluateString($string, $doEvaluation = true) {
+	public static function evaluateString($string, $doEvaluation = TRUE) {
 		$matches = array();
 		$numReplacements = preg_match_all('/(\{.*?\})/', $string, $matches, PREG_SET_ORDER);
 			// If there was nothing to match or the matching failed, return the string as is
@@ -95,7 +95,7 @@ class tx_expressions_parser {
 	 */
 	public static function evaluateExpression($expression) {
 		$returnValue = '';
-		$hasValue = false;
+		$hasValue = FALSE;
 		if (empty($expression)) {
 			throw new Exception('Empty expression received');
 		} else {
@@ -106,7 +106,7 @@ class tx_expressions_parser {
 			foreach ($allExpressions as $anExpression) {
 					// Check if there's a function call
 				$functions = array();
-				if (strpos($anExpression, '->') !== false) {
+				if (strpos($anExpression, '->') !== FALSE) {
 						// Split on the function call marker (->)
 					$expressionParts = t3lib_div::trimExplode('->', $anExpression, TRUE);
 						// The first part is the expression itself
@@ -115,9 +115,9 @@ class tx_expressions_parser {
 					$functions = $expressionParts;
 				}
 					// If there's no colon (:) in the expression, take it to be a litteral value and return it as is
-				if (strpos($anExpression, ':') === false) {
+				if (strpos($anExpression, ':') === FALSE) {
 					$returnValue = $anExpression;
-					$hasValue = true;
+					$hasValue = TRUE;
 				} else {
 					$indices = '';
 					list($key, $indices) = t3lib_div::trimExplode(':', $anExpression, TRUE);
@@ -131,7 +131,7 @@ class tx_expressions_parser {
 							if (TYPO3_MODE == 'FE') {
 								try {
 									$returnValue = self::getValue($GLOBALS['TSFE'], $indices);
-									$hasValue = true;
+									$hasValue = TRUE;
 								}
 								catch (Exception $e) {
 									continue;
@@ -146,7 +146,7 @@ class tx_expressions_parser {
 							if (TYPO3_MODE == 'FE') {
 								try {
 									$returnValue = self::getValue($GLOBALS['TSFE']->page, $indices);
-									$hasValue = true;
+									$hasValue = TRUE;
 								}
 								catch (Exception $e) {
 									continue;
@@ -161,7 +161,7 @@ class tx_expressions_parser {
 							if (TYPO3_MODE == 'FE') {
 								try {
 									$returnValue = self::getValue($GLOBALS['TSFE']->config['config'], $indices);
-									$hasValue = true;
+									$hasValue = TRUE;
 								}
 								catch (Exception $e) {
 									continue;
@@ -175,7 +175,7 @@ class tx_expressions_parser {
 							if (TYPO3_MODE == 'FE') {
 								try {
 									$returnValue = self::getValue($GLOBALS['TSFE']->tmpl->setup['plugin.'], $indices);
-									$hasValue = true;
+									$hasValue = TRUE;
 								}
 								catch (Exception $e) {
 									continue;
@@ -188,7 +188,7 @@ class tx_expressions_parser {
 						case 'gp':
 							try {
 								$returnValue = self::getValue(array_merge(t3lib_div::_GET(), t3lib_div::_POST()), $indices);
-								$hasValue = true;
+								$hasValue = TRUE;
 							}
 							catch (Exception $e) {
 								continue;
@@ -198,7 +198,7 @@ class tx_expressions_parser {
 						case 'vars':
 							try {
 								$returnValue = self::getValue(self::$vars, $indices);
-								$hasValue = true;
+								$hasValue = TRUE;
 							}
 							catch (Exception $e) {
 								continue;
@@ -208,7 +208,7 @@ class tx_expressions_parser {
 						case 'extra':
 							try {
 								$returnValue = self::getValue(self::$extraData, $indices);
-								$hasValue = true;
+								$hasValue = TRUE;
 							}
 							catch (Exception $e) {
 								continue;
@@ -217,15 +217,15 @@ class tx_expressions_parser {
 							// Calculate a value using the PHP date() function
 						case 'date':
 							$returnValue = date($indices);
-							$hasValue = true;
+							$hasValue = TRUE;
 							break;
 						case 'strtotime':
 							$value = strtotime($indices);
-							if ($value === false || $value === -1) {
+							if ($value === FALSE || $value === -1) {
 								throw new Exception('Date string could not be parsed: ' . $indices);
 							} else {
 								$returnValue = $value;
-								$hasValue = true;
+								$hasValue = TRUE;
 							}
 							break;
 							// Get data from the session
@@ -240,7 +240,7 @@ class tx_expressions_parser {
 							}
 							try {
 								$returnValue = self::getValue($cache, $indices);
-								$hasValue = true;
+								$hasValue = TRUE;
 							}
 							catch (Exception $e) {
 								continue;
@@ -251,7 +251,7 @@ class tx_expressions_parser {
 							if (TYPO3_MODE == 'FE') {
 								try {
 									$returnValue = self::getValue($GLOBALS['TSFE']->fe_user->user, $indices);
-									$hasValue = true;
+									$hasValue = TRUE;
 								}
 								catch (Exception $e) {
 									continue;
@@ -266,7 +266,7 @@ class tx_expressions_parser {
 								$keyProcessor = &t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][self::$extKey]['keyProcessor'][$key]);
 								if ($keyProcessor instanceof tx_expressions_keyProcessor) {
 									$returnValue = $keyProcessor->getValue($indices);
-									$hasValue = true;
+									$hasValue = TRUE;
 								}
 							}
 							break;
@@ -431,10 +431,10 @@ class tx_expressions_parser {
 	 * In the case of a FE plugin, it would be the piVars
 	 *
 	 * @param	array	$vars: array of values
-	 * @param	boolean	$reset: true if self::$vars must be reset
+	 * @param	boolean	$reset: TRUE if self::$vars must be reset
 	 * @return	void
 	 */
-	public static function setVars($vars, $reset = false) {
+	public static function setVars($vars, $reset = FALSE) {
 		if (is_array($vars)) {
 			if ($reset) {
 				self::$vars = $vars;
@@ -449,11 +449,11 @@ class tx_expressions_parser {
 	 * that should not be mixed up with the local variables stored in self::$vars
 	 *
 	 * @param	array	$vars: array of values
-	 * @param	boolean	$reset: true if self::$extraData must be reset
+	 * @param	boolean	$reset: TRUE if self::$extraData must be reset
 	 * @return	void
 	 * @see		tx_expressions_parser::setVars()
 	 */
-	public static function setExtraData($data, $reset = false) {
+	public static function setExtraData($data, $reset = FALSE) {
 		if (is_array($data)) {
 			if ($reset) {
 				self::$extraData = $data;
