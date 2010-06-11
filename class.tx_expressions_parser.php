@@ -260,6 +260,11 @@ class tx_expressions_parser {
 								throw new Exception('TSFE->fe_user not available in this mode (' . TYPO3_MODE . ')');
 							}
 							break;
+							// Search for a value in the environment variables as returned by t3lib_div::getIndpEnv()
+						case 'env':
+							$returnValue = t3lib_div::getIndpEnv(strtoupper($indices));
+							$hasValue = TRUE;
+							break;
 							// If none of the standard keys matched, try looking for a hook for that given key
 						default:
 							if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][self::$extKey]['keyProcessor'][$key])) {
