@@ -120,7 +120,9 @@ class tx_expressions_parser {
 					$hasValue = TRUE;
 				} else {
 					$indices = '';
-					list($key, $indices) = t3lib_div::trimExplode(':', $anExpression, TRUE);
+					$subParts = t3lib_div::trimExplode(':', $anExpression, TRUE);
+					$key = array_shift($subParts);
+					$indices = implode(':', $subParts);
 					if (empty($indices)) {
 						throw new Exception('No indices in expression: ' . $expression);
 					}
