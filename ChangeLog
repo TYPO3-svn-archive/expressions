@@ -1,3 +1,9 @@
+2010-06-11 Francois Suter (Cobweb)  <typo3@cobweb.ch>
+
+	* Added new function key "env"
+	* Corrected a bug with multiple colons in an expression
+	* Released to TER as version 1.2.0
+
 2010-06-02 Fabien Udriot  <fabien.udriot@ecodev.ch>
 
 	* Added View Helper for Fluid
