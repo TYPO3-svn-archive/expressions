@@ -96,7 +96,7 @@ class tx_expressions_parser {
 	public static function evaluateExpression($expression) {
 		$returnValue = '';
 		$hasValue = FALSE;
-		if (empty($expression)) {
+		if (!isset($expression) || $expression === '') {
 			throw new Exception('Empty expression received');
 		} else {
 				// First of all, evaluate any subexpressions that may be contained in the expression
