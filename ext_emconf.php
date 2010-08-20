@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "expressions".
 #
-# Auto generated 11-06-2010 10:27
+# Auto generated 20-08-2010 14:28
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
 	'author_company' => '',
-	'version' => '1.2.0',
+	'version' => '1.2.1',
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.0.0-0.0.0',
@@ -40,7 +40,7 @@ $EM_CONF[$_EXTKEY] = array(
 			'context' => '5.0.0-0.0.0',
 		),
 	),
-	'_md5_values_when_last_written' => 'a:13:{s:9:"ChangeLog";s:4:"b395";s:10:"README.txt";s:4:"ee2d";s:39:"class.tx_expressions_contextstorage.php";s:4:"67d8";s:31:"class.tx_expressions_parser.php";s:4:"fc12";s:16:"ext_autoload.php";s:4:"e35d";s:12:"ext_icon.gif";s:4:"160e";s:17:"ext_localconf.php";s:4:"6d4d";s:42:"Classes/ViewHelpers/EvaluateViewHelper.php";s:4:"baa0";s:14:"doc/manual.pdf";s:4:"ce81";s:14:"doc/manual.sxw";s:4:"3770";s:52:"interfaces/interface.tx_expressions_keyprocessor.php";s:4:"6cf4";s:58:"interfaces/interface.tx_expressions_valuepostprocessor.php";s:4:"d945";s:50:"samples/class.tx_expressions_functionProcessor.php";s:4:"c39a";}',
+	'_md5_values_when_last_written' => 'a:13:{s:9:"ChangeLog";s:4:"d840";s:10:"README.txt";s:4:"ee2d";s:39:"class.tx_expressions_contextstorage.php";s:4:"67d8";s:31:"class.tx_expressions_parser.php";s:4:"3e3f";s:16:"ext_autoload.php";s:4:"fec6";s:12:"ext_icon.gif";s:4:"160e";s:17:"ext_localconf.php";s:4:"6d4d";s:42:"Classes/ViewHelpers/EvaluateViewHelper.php";s:4:"baa0";s:14:"doc/manual.pdf";s:4:"ce81";s:14:"doc/manual.sxw";s:4:"3770";s:52:"interfaces/interface.tx_expressions_keyprocessor.php";s:4:"6cf4";s:58:"interfaces/interface.tx_expressions_valuepostprocessor.php";s:4:"d945";s:50:"samples/class.tx_expressions_functionProcessor.php";s:4:"c39a";}',
 	'suggests' => array(
 	),
 );
