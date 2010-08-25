@@ -101,9 +101,12 @@ class tx_expressions_parser {
 		} else {
 				// First of all, evaluate any subexpressions that may be contained in the expression
 			$parsedExpression = self::evaluateString($expression, FALSE);
-				// An expression may contain several expressions as alternate values, separated by a double slash (//)
+				// An expression may contain several expressions as alternativtye values, separated by a double slash (//)
 			$allExpressions = t3lib_div::trimExplode('//', $parsedExpression, TRUE);
+			$numberOfAlternatives = count($allExpressions);
 			foreach ($allExpressions as $anExpression) {
+					// Decrease the number of remaining alternatives
+				$numberOfAlternatives--;
 					// Check if there's a function call
 				$functions = array();
 				if (strpos($anExpression, '->') !== FALSE) {
@@ -139,7 +142,10 @@ class tx_expressions_parser {
 									continue;
 								}
 							} else {
-								throw new Exception('TSFE not available in this mode (' . TYPO3_MODE . ')');
+									// Throw exception, but only if we have run out of alternatives
+								if ($numberOfAlternatives == 0) {
+									throw new Exception('TSFE not available in this mode (' . TYPO3_MODE . ')');
+								}
 							}
 							break;
 							// Search for a value in the page record
@@ -154,7 +160,10 @@ class tx_expressions_parser {
 									continue;
 								}
 							} else {
-								throw new Exception('TSFE->page not available in this mode (' . TYPO3_MODE . ')');
+									// Throw exception, but only if we have run out of alternatives
+								if ($numberOfAlternatives == 0) {
+									throw new Exception('TSFE->page not available in this mode (' . TYPO3_MODE . ')');
+								}
 							}
 							break;
 							// Search for a value in the template configuration
@@ -169,7 +178,10 @@ class tx_expressions_parser {
 									continue;
 								}
 							} else {
-								throw new Exception('TSFE->config not available in this mode (' . TYPO3_MODE . ')');
+									// Throw exception, but only if we have run out of alternatives
+								if ($numberOfAlternatives == 0) {
+									throw new Exception('TSFE->config not available in this mode (' . TYPO3_MODE . ')');
+								}
 							}
 							break;
 							// Search for a value in the merged GET and POST arrays
@@ -183,7 +195,10 @@ class tx_expressions_parser {
 									continue;
 								}
 							} else {
-								throw new Exception('Plugin setup not available in this mode (' . TYPO3_MODE . ')');
+									// Throw exception, but only if we have run out of alternatives
+								if ($numberOfAlternatives == 0) {
+									throw new Exception('Plugin setup not available in this mode (' . TYPO3_MODE . ')');
+								}
 							}
 							break;
 							// Search for a value in the merged GET and POST arrays
@@ -238,7 +253,12 @@ class tx_expressions_parser {
 							$indices = implode('|', $segments);
 							$cache = $GLOBALS['TSFE']->fe_user->getKey('ses', $cacheKey);
 							if (empty($cache)) {
-								throw new Exception('No session data found for expression: ' . $expression);
+									// Throw exception, but only if we have run out of alternatives
+								if ($numberOfAlternatives == 0) {
+									throw new Exception('No session data found for expression: ' . $expression);
+								} else {
+									continue;
+								}
 							}
 							try {
 								$returnValue = self::getValue($cache, $indices);
@@ -259,7 +279,10 @@ class tx_expressions_parser {
 									continue;
 								}
 							} else {
-								throw new Exception('TSFE->fe_user not available in this mode (' . TYPO3_MODE . ')');
+									// Throw exception, but only if we have run out of alternatives
+								if ($numberOfAlternatives == 0) {
+									throw new Exception('TSFE->fe_user not available in this mode (' . TYPO3_MODE . ')');
+								}
 							}
 							break;
 							// Search for a value in the environment variables as returned by t3lib_div::getIndpEnv()
