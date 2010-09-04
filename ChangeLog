@@ -1,3 +1,7 @@
+2010-09-04 Francois Suter (Cobweb)  <typo3@cobweb.ch>
+
+	* Removed unnecessary usage of "context" extension hook
+
 2010-08-25 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
 	* Corrected behavior of exceptions when using alternative expressions
