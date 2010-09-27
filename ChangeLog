@@ -1,3 +1,8 @@
+2010-09-27 Francois Suter (Cobweb)  <typo3@cobweb.ch>
+
+	* Removed suggestion of extension "context"
+	* Released to TER as version 1.2.3
+
 2010-09-04 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
 	* Removed unnecessary usage of "context" extension hook
