@@ -347,11 +347,11 @@ class tx_expressions_parser {
 	 * @return	mixed	Whatever value was found in the array, but it should be a simple type
 	 */
 	protected static function getValue($source, $indices) {
+		$value = $source;
 		if (empty($indices)) {
 			throw new Exception('No key given for source');
 		} else {
 			$indexList = t3lib_div::trimExplode('|', $indices, TRUE);
-			$value = $source;
 			foreach ($indexList as $key) {
 				if (is_object($value) && isset($value->$key) && $value->$key !== '') {
 					$value = $value->$key;
@@ -382,9 +382,48 @@ class tx_expressions_parser {
 			// Separate function key and list of arguments
 		list($function, $argumentsString) = t3lib_div::trimExplode(':', $functionDefinition, TRUE);
 			// Get arguments as array
-		if (!empty ($argumentsString)) {
+		if (isset($argumentsString) && $argumentsString != '') {
 			$arguments = t3lib_div::trimExplode(',', $argumentsString, TRUE);
 		}
+			// Execute the function, recursively if value is an array
+		if (is_array($value)) {
+			$processedValue = self::executeFunctionOnArray($value, $function, $arguments);
+		} else {
+			$processedValue = self::executeFunctionOnItem($value, $function, $arguments);
+		}
+		return $processedValue;
+	}
+
+	/**
+	 * This method loops on all items in an array and executes the function on it
+	 * (or calls itself recursively if item is itself an array)
+	 *
+	 * @param	array	$value: list of values to call the function on
+	 * @param	string	$function: the key of the function to call
+	 * @param	array	$arguments: the list of arguments to pass in the function call
+	 * @return	array	The processed array of values
+	 */
+	protected function executeFunctionOnArray(array $value, $function, $arguments) {
+		foreach ($value as $key => $item) {
+			if (is_array($item)) {
+				$value[$key] = self::executeFunctionOnArray($item, $function, $arguments);
+			} else {
+				$value[$key] = self::executeFunctionOnItem($item, $function, $arguments);
+			}
+		}
+		return $value;
+	}
+
+	/**
+	 * This method calls the processing function on a given value
+	 *
+	 * @param	mixed	$value: value to call the function on
+	 * @param	string	$function: the key of the function to call
+	 * @param	array	$arguments: the list of arguments to pass in the function call
+	 * @return	array	The processed values
+	 */
+	protected function executeFunctionOnItem($value, $function, $arguments) {
+		$processedValue = $value;
 			// Execute function
 		switch ($function) {
 			case 'fullQuoteStr':
