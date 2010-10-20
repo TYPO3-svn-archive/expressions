@@ -368,7 +368,7 @@ class tx_expressions_parser {
 	/**
 	 * This method handles the function calls that can be made inside expressions
 	 * NOTE: if the function cannot be called, the original value is returned untouched
-	 * 
+	 *
 	 * @param	mixed	$value: The value to pass to the function (the result of an expression)
 	 * @param	string	$functionDefinition: the definition of the function to call in the appropriate syntax
 	 * @return	mixed	The value, as processed by the function
@@ -433,6 +433,15 @@ class tx_expressions_parser {
 					throw new Exception('TYPO3_DB object not available');
 				} else {
 					$processedValue = $GLOBALS['TYPO3_DB']->fullQuoteStr($value, $arguments[0]);
+				}
+				break;
+			case 'quoteStr':
+				if (count($arguments) < 1) {
+					throw new Exception('quoteStr() requires 1 argument (table name)');
+				} elseif (!isset($GLOBALS['TYPO3_DB'])) {
+					throw new Exception('TYPO3_DB object not available');
+				} else {
+					$processedValue = $GLOBALS['TYPO3_DB']->quoteStr($value, $arguments[0]);
 				}
 				break;
 			case 'strip_tags':

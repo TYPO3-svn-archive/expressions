@@ -1,3 +1,7 @@
+2010-10-20 Francois Suter (Cobweb)  <typo3@cobweb.ch>
+
+	* Add new function "quoteStr" (mapped to t3lib_db::quoteStr())
+
 2010-09-28 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
 	* Added proper handling of function processing when value is a function
@@ -31,7 +35,7 @@
 
 	* Added View Helper for Fluid
 	* Added shortcut key "fe_user"
-	
+
 2010-05-05 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
 	* Corrected parser behavior in case of empty string values
