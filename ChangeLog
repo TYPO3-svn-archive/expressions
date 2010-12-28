@@ -8,7 +8,7 @@
 
 2010-09-28 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
-	* Added proper handling of function processing when value is a function
+	* Added proper handling of function processing when value is an array
 
 2010-09-27 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
