@@ -13,19 +13,21 @@
  * Public License for more details.                                       *
  *                                                                        */
 
+require_once(t3lib_extMgm::extPath('expressions', 'class.tx_expressions_parser.php'));
+
 /**
- * This class is a Expressions view helper for the Fluid templating engine. 
+ * This class is a Expressions view helper for the Fluid templating engine.
  *
  * In TypoScript templates there exists a function called “getText”, which makes it possible
- * to retrieve values from a great number of sources (GET/POST, TSFE, rootline, etc.). 
- * Extension "expressions" provides a library which aims to reproduce this capability, 
+ * to retrieve values from a great number of sources (GET/POST, TSFE, rootline, etc.).
+ * Extension "expressions" provides a library which aims to reproduce this capability,
  * so that it can be used by developers where Typoscript is not used for whatever reasons.
  *
- * Like for the TypoScript function, an expression – at a minimum – is comprised of a key, a colon (:) and a value. 
+ * Like for the TypoScript function, an expression – at a minimum – is comprised of a key, a colon (:) and a value.
  * Example: tsfe:id
- * 
+ *
  * Expression keys reference:
- * 
+ *
  * tsfe:      get a value from the $TSFE global variable
  * page:      get a value related to the current page, as stored in $TSFE->page
  * config:    get a value from the “config” object, as stored in $TSFE->config['config']
@@ -52,7 +54,7 @@ class Tx_Expressions_ViewHelpers_EvaluateViewHelper extends Tx_Fluid_Core_ViewHe
 	 *
 	 * Usage:
 	 *
-	 * Assuming that namespace has been declared as follows: 
+	 * Assuming that namespace has been declared as follows:
 	 * {namespace expression = Tx_Expressions_ViewHelpers}
 	 *
 	 * Expression:
