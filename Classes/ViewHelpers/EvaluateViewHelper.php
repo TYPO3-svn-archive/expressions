@@ -43,6 +43,28 @@ require_once(t3lib_extMgm::extPath('expressions', 'class.tx_expressions_parser.p
  * More documentation can be found at
  * http://typo3.org/extensions/repository/view/expressions/current/
  *
+ * = Examples =
+ *
+ * Assuming that namespace has been declared as follows:
+ * {namespace expression = Tx_Expressions_ViewHelpers}
+ *
+ * <code title="Simple string with expression to evaluate">
+ * <expression:evaluate>Current page id is \{tsfe:id\}</expression:evaluate>
+ * </code>
+ * <output>
+ * Current page id is 1
+ * (assuming the current page has uid = 1, of course)
+ * </output>
+ * Note the escaped curly braces, so that Fluid is not confused
+ *
+ * <code title="Inline notation">
+ * {expression:evaluate(expression:'Current user is \{fe_user:username\}')}
+ * </code>
+ * <output>
+ * Current user is zaphod
+ * (assuming the current FE user's username is "zaphod")
+ * </output>
+ *
  * @package TYPO3
  * @subpackage tx_expressions
  * @version $Id$
@@ -50,31 +72,26 @@ require_once(t3lib_extMgm::extPath('expressions', 'class.tx_expressions_parser.p
 class Tx_Expressions_ViewHelpers_EvaluateViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
 
 	/**
-	 * Evaluates expression througout the Expression Parser
+	 * Evaluates expression throughout the Expression Parser
 	 *
-	 * Usage:
-	 *
-	 * Assuming that namespace has been declared as follows:
-	 * {namespace expression = Tx_Expressions_ViewHelpers}
-	 *
-	 * Expression:
-	 * <expression:evaluate>Current page id is \{tsfe:id\}</expression:evaluate>
-	 *
-	 * Result:
-	 * Current page id is 1
-	 *
+	 * @param string expression to be evaluated
 	 * @return string the evaluated string.
 	 * @author Fabien Udriot <fabien.udriot@ecodev.ch>
+	 * @author Francois Suter <typo3@cobweb.ch>
 	 * @api
 	 */
-	public function render() {
-		$content = $this->renderChildren();
+	public function render($expression = NULL) {
+		if ($expression === NULL) {
+			$expression = $this->renderChildren();
+		};
+			// Replace escaped curly braces
 		$searches[] = '\{';
 		$replaces[] = '{';
 		$searches[] = '\}';
 		$replaces[] = '}';
-		$content = str_replace($searches, $replaces, $content);
-		return tx_expressions_parser::evaluateString($content);
+		$expression = str_replace($searches, $replaces, $expression);
+			// Evaluate and return
+		return tx_expressions_parser::evaluateString($expression);
 	}
 
 }

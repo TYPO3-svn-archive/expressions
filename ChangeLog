@@ -1,6 +1,7 @@
 2011-04-04 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
 	* Added require statement to Fluid view helper, resolves #25740
+	* Added support for inline notation, resolves #25742
 
 2010-12-28 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
