@@ -2,6 +2,7 @@
 
 	* Added require statement to Fluid view helper, resolves #25740
 	* Added support for inline notation, resolves #25742
+	* Released to TER as version 1.4.0
 
 2010-12-28 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
