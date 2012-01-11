@@ -1,3 +1,7 @@
+2012-01-11 Francois Suter (Cobweb)  <typo3@cobweb.ch>
+
+	* Small code cleanup
+
 2011-04-04 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
 	* Added require statement to Fluid view helper, resolves #25740

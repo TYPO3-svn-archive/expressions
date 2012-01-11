@@ -122,7 +122,6 @@ class tx_expressions_parser {
 					$returnValue = $anExpression;
 					$hasValue = TRUE;
 				} else {
-					$indices = '';
 					$subParts = t3lib_div::trimExplode(':', $anExpression, TRUE);
 					$key = array_shift($subParts);
 					$indices = implode(':', $subParts);
@@ -293,6 +292,7 @@ class tx_expressions_parser {
 							// If none of the standard keys matched, try looking for a hook for that given key
 						default:
 							if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][self::$extKey]['keyProcessor'][$key])) {
+									/** @var $keyProcessor tx_expressions_keyProcessor */
 								$keyProcessor = &t3lib_div::getUserObj($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][self::$extKey]['keyProcessor'][$key]);
 								if ($keyProcessor instanceof tx_expressions_keyProcessor) {
 									$returnValue = $keyProcessor->getValue($indices);
@@ -324,6 +324,7 @@ class tx_expressions_parser {
 		if ($hasValue) {
 			if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][self::$extKey]['postprocessReturnValue'])) {
 				foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF'][self::$extKey]['postprocessReturnValue'] as $className) {
+						/** @var $postProcessor tx_expressions_valuePostProcessor */
 					$postProcessor = &t3lib_div::getUserObj($className);
 					if ($postProcessor instanceof tx_expressions_valuePostProcessor) {
 						$returnValue = $postProcessor->postprocessReturnValue($returnValue);
@@ -375,9 +376,6 @@ class tx_expressions_parser {
 	 */
 	protected function processFunctionCall($value, $functionDefinition) {
 			// Initializations
-		$processedValue = $value;
-		$function = '';
-		$argumentsString = '';
 		$arguments = array();
 			// Separate function key and list of arguments
 		list($function, $argumentsString) = t3lib_div::trimExplode(':', $functionDefinition, TRUE);
@@ -526,7 +524,7 @@ class tx_expressions_parser {
 	 * This method can be used to store additional variables into the parser,
 	 * that should not be mixed up with the local variables stored in self::$vars
 	 *
-	 * @param	array	$vars: array of values
+	 * @param	array	$data: array of values
 	 * @param	boolean	$reset: TRUE if self::$extraData must be reset
 	 * @return	void
 	 * @see		tx_expressions_parser::setVars()
