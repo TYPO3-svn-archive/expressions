@@ -90,8 +90,9 @@ class tx_expressions_parser {
 	 * The expected syntax of a filter value is key:index1|index2|...
 	 * Simple values will be used as is
 	 *
-	 * @param	string	$expression: the expression to evaluate
-	 * @return	string	The value for the filter
+	 * @param string $expression The expression to evaluate
+	 * @throws Exception
+	 * @return string The value for the filter
 	 */
 	public static function evaluateExpression($expression) {
 		$returnValue = '';
@@ -343,9 +344,10 @@ class tx_expressions_parser {
 	 * This method is used to get a value from inside a multi-dimensional array or object
 	 * NOTE: this code is largely inspired by tslib_content::getGlobal()
 	 *
-	 * @param	mixed	$source: array or object to look into
-	 * @param	string	$indices: "path" of indices inside the multi-dimensional array, of the form index1|index2|...
-	 * @return	mixed	Whatever value was found in the array, but it should be a simple type
+	 * @param mixed $source Array or object to look into
+	 * @param string $indices "Path" of indices inside the multi-dimensional array, of the form index1|index2|...
+	 * @throws Exception
+	 * @return mixed Whatever value was found in the array, but it should be a simple type
 	 */
 	protected static function getValue($source, $indices) {
 		$value = $source;
@@ -415,10 +417,11 @@ class tx_expressions_parser {
 	/**
 	 * This method calls the processing function on a given value
 	 *
-	 * @param	mixed	$value: value to call the function on
-	 * @param	string	$function: the key of the function to call
-	 * @param	array	$arguments: the list of arguments to pass in the function call
-	 * @return	array	The processed values
+	 * @param mixed $value Value to call the function on
+	 * @param string $function The key of the function to call
+	 * @param array $arguments The list of arguments to pass in the function call
+	 * @throws Exception
+	 * @return array The processed values
 	 */
 	protected function executeFunctionOnItem($value, $function, $arguments) {
 		$processedValue = $value;

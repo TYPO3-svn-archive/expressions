@@ -74,7 +74,7 @@ class Tx_Expressions_ViewHelpers_EvaluateViewHelper extends Tx_Fluid_Core_ViewHe
 	/**
 	 * Evaluates expression throughout the Expression Parser
 	 *
-	 * @param string expression to be evaluated
+	 * @param string $expression Expression to be evaluated
 	 * @return string the evaluated string.
 	 * @author Fabien Udriot <fabien.udriot@ecodev.ch>
 	 * @author Francois Suter <typo3@cobweb.ch>
