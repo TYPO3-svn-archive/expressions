@@ -306,7 +306,7 @@ class tx_expressions_parser {
 					// If a value was found, process it and exit the loop
 				if ($hasValue) {
 						// Call functions, if any
-					if (count($functions > 0)) {
+					if (count($functions) > 0) {
 						foreach ($functions as $functionDefinition) {
 							try {
 								$returnValue = self::processFunctionCall($returnValue, $functionDefinition);
