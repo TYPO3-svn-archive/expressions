@@ -1,6 +1,7 @@
 2013-03-26 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
 	* Corrected syntax error in function processing, resolves #46700
+	* Verified compatibility with TYPO3 6.0, resolves #46698
 
 2012-07-10 Francois Suter (Cobweb)  <typo3@cobweb.ch>
 
